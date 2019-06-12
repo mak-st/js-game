@@ -1,10 +1,8 @@
 const cat = document.getElementById('cat');
 const c = cat.getContext('2d');
 
-const cat1 = new Image();
-cat1.src = 'img/cat1.png';
-const cat2 = new Image();
-cat2.src = 'img/cat2.png';
+var catImg = new Image();
+catImg.src = 'img/cat1.png';
 
 
 const cw = cat.width;
@@ -58,7 +56,7 @@ function drawBackground() {
 function draw() {
 	drawBackground();
 	if (started == false) {
-		drawButton(startBtn);
+		startPage();
 	} else {
 		game();
 	}
@@ -67,11 +65,13 @@ function draw() {
 var i = 0;
 function catTalk() {
 	i++;
-	if (i%2 == 1) {
-		c.drawImage(cat1, cw/2 - 80, ch/3);
-	} else {
-		c.drawImage(cat2, cw/2 - 80, ch/3);
+	delayer = 25;
+	if (i%(delayer*2) == delayer) {
+		catImg.src = 'img/cat1.png';
+	} else if (i%(delayer*2) == 0) {
+		catImg.src = 'img/cat2.png';
 	}
+	c.drawImage(catImg, cw/2 - 80, ch/3);
 }
 
 function drawRect(color, x, y, w, h) {
@@ -85,11 +85,12 @@ function game() {
 	c.textAlign = 'center';
 	c.textBaseline = 'middle';
 	c.fillText('Cat: Meow!', cw / 2, ch *2 / 3);
-	setInterval(catTalk(), 100);
+	setInterval(catTalk(), 1000);
 }
 
 function startPage() {
 	drawBackground();
+	drawButton(startBtn);
 }
 
 function update() {
@@ -98,6 +99,8 @@ function update() {
 }
 
 update();
+
+
 
 cat.addEventListener('click', event => {
 	if (event.offsetX >= startBtn.left &&
